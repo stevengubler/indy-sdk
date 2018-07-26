@@ -46,6 +46,7 @@ def windowsTesting() {
                                 "RUST_BACKTRACE=1"
                         ]) {
                             bat "cargo build --features fatal_warnings"
+                            bat "cargo +nightly clippy"
                             bat "cargo test --no-run"
 
                             echo "Windows Libindy Test: Run tests"
@@ -65,6 +66,7 @@ def windowsTesting() {
                                 "RUST_BACKTRACE=1"
                         ]) {
                             bat "cargo build --features fatal_warnings"
+                            bat "cargo +nightly clippy"
                             bat "cargo test --no-run"
 
                             echo "Windows Libnullpay Test: Run tests"
@@ -134,6 +136,7 @@ def macosTesting() {
                     setupRust()
                     setupBrewPackages()
                     sh "cargo build --features fatal_warnings"
+                    sh "cargo +nightly clippy"
                     sh "cargo test --no-run"
                     // TODO testing
                 }
@@ -235,6 +238,7 @@ def linuxTesting(file, env_name, network_name) {
             testEnv.inside("--ip=\"10.0.0.3\" --network=${network_name}") {
                 echo "${env_name} Libindy Test: Build"
                 sh "cargo build --features \"fatal_warnings $additionalFeatures\""
+                sh "cargo +nightly clippy"
             }
         }
 
@@ -250,6 +254,7 @@ def linuxTesting(file, env_name, network_name) {
             testEnv.inside("--ip=\"10.0.0.3\" --network=${network_name}") {
                 echo "${env_name} Libnullpay Test: Build"
                 sh "LIBRARY_PATH=./ cargo build --features fatal_warnings"
+                sh "cargo +nightly clippy"
             }
         }
 
