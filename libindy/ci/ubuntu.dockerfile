@@ -53,8 +53,8 @@ RUN useradd -ms /bin/bash -u $uid indy
 USER indy
 
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain 1.26.0
+ENV PATH /home/indy/.cargo/bin:$PATH
 RUN rustup install nightly
 RUN rustup component add clippy-preview --toolchain=nightly
-ENV PATH /home/indy/.cargo/bin:$PATH
 
 WORKDIR /home/indy

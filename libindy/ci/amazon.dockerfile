@@ -39,17 +39,10 @@ RUN wget https://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-mav
 RUN sed -i s/\$releasever/6/g /etc/yum.repos.d/epel-apache-maven.repo
 RUN yum install -y apache-maven
 
-ENV RUST_ARCHIVE=rust-1.26.0-x86_64-unknown-linux-gnu.tar.gz
-ENV RUST_DOWNLOAD_URL=https://static.rust-lang.org/dist/$RUST_ARCHIVE
-
-RUN mkdir -p /rust
-WORKDIR /rust
-
-RUN curl -fsOSL $RUST_DOWNLOAD_URL \
-    && curl -s $RUST_DOWNLOAD_URL.sha256 | sha256sum -c - \
-    && tar -C /rust -xzf $RUST_ARCHIVE --strip-components=1 \
-    && rm $RUST_ARCHIVE \
-    && ./install.sh
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain 1.26.0
+ENV PATH /home/indy/.cargo/bin:$PATH
+RUN rustup install nightly
+RUN rustup component add clippy-preview --toolchain=nightly
 
 ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/.cargo/bin"
 
